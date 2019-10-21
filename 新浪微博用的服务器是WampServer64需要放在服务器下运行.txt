@@ -1,0 +1,2 @@
+新浪微博用的服务器是WampServer64需要放在服务器下运行 SQL账号root 密码12345678
+在线翻译需要 在cmd 下 通过Vue指令 npm dev run 运行

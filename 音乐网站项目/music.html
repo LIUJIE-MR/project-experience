@@ -1,0 +1,2938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>佳 哥 组 音 乐 网 站 制 作</title>
+    <link rel="stylesheet" href="css/music.css">
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="js/music.js"></script>
+</head>
+<body style="background-color: #333;">
+
+<!--置顶开始-->
+<a href="#">
+    <img src="images/st.png" id="scrollTop">
+</a>
+<!--置顶结束-->
+
+<!--二级界面开始-->
+<!--登录界面开始-->
+<form id="myLoginForm" action="../servlets/loginServlet" method="post" target="rf">
+    <div id="loginBox">
+        <p>
+            <a class="txtUserName_leftIcon" href="#"></a>
+            <input id="txtUserName" type="text" name="txtUserName" placeholder="请输入用户名">
+        </p>
+        <p>
+            <a class="txtPwd_leftIcon" href="#"></a>
+            <input id="txtPwd" type="password" name="txtPwd" placeholder="请输入密码">
+        </p>
+        <a href="javascript:;" id="registerAccount">注册账号</a>
+        <input id="loginBtn" type="button" value="登录" name="loginBtn" onclick="verifyLogin()">
+        <input type="hidden" value=""/>
+    </div>
+</form>
+<iframe id="rf" name="rf" src="about:blank" style="display:none"></iframe>
+<!--登录界面结束-->
+
+<!--注册界面开始-->
+<form id="myRegForm" action="../servlets/registerServlet" method="post" target="nm_iframe">
+    <div id="register_frame">
+        <div class="register_frame_child_div">
+            <span class="reg_userNameLabel">用户名：</span>
+            <div class="reg_userNameLabel_div">
+                <input type="text" id="reg_txt" name="reg_txt" placeholder
+                        ="用户名只能由6~16位数字或字母组成" onkeyup="verifyRegUserName()">
+            </div>
+        </div>
+        <p id="verifyRegUserName"></p>
+        <div class="register_frame_child_div">
+            <span class="reg_userNameLabel">密码：</span>
+            <input type="password" id="reg_pwd" name="reg_pwd" placeholder
+                    ="密码只能由6位以上数字、字母和下划线组成" onkeyup="verifyRegPassword()">
+        </div>
+        <div class="register_frame_child_div smb">
+            <div id="ver_pwd_small">弱</div>
+            <div id="ver_pwd_middle">中</div>
+            <div id="ver_pwd_big">强</div>
+        </div>
+        <div class="register_frame_child_div">
+            <span class="reg_userNameLabel">重复密码：</span>
+            <input type="password" id="reg_repPwd" name="reg_repPwd" placeholder
+                    ="请再次输入密码" onkeyup="verifyRegRepPassword()">
+        </div>
+        <p id="verifyRegPwd"></p>
+        <div class="register_frame_child_div sex">
+            <span class="reg_userNameLabel">性别：</span>
+            <input type="radio" name="sex" checked="checked">&nbsp;男&nbsp;&nbsp;
+            <input type="radio" name="sex">&nbsp;女
+        </div>
+        <div class="verifyCode">
+            <div id="code"></div>
+            <div class="verify_code_inp">
+                <input type="text" id="verify_code_txt" name="verify_code_txt"
+                       placeholder="请输入验证码" onkeyup="validate()">
+            </div>
+            <p id="changeCode" onclick="createCode()">换一张？</p>
+            <span id="receiveCodeMessage"></span>
+        </div>
+        <div class="read_agree">
+            <div style="float:left; margin-top: 2px;">
+                <input type="checkbox" checked="checked">&nbsp;&nbsp;
+            </div>
+            <span>
+                    我已阅读并同意
+                    <a href="javascript:;" id="userProtocol">用户协议</a>
+                    <a href="javascript:;" id="concealPolicy">隐私政策</a>
+                </span>
+        </div>
+        <input type="button" id="sub_reg" value="注册" onclick="regSubClickEvent()">
+        <p class="reg_footer">
+            已注册, <a id="regChangeLogin" href="#">去登录</a>
+        </p>
+    </div>
+</form>
+<iframe id="id_iframe" name="nm_iframe" src="about:blank" style="display:none;"></iframe>
+<!--注册界面结束-->
+
+<!--留言板开始-->
+<form id="myLanguageForm" action="../servlets/languageServlet" method="post" target="lan_rf">
+    <div id="language">
+        <ul id="language_ul"></ul>
+        <input type="hidden" id="lan_hide" name="myHide">
+        <textarea maxlength="150" name="lan_area" id="lan_area" cols="30" rows="10"
+                  placeholder="请输入您要留言的信息：" onkeyup="lan_num_move(this)"></textarea>
+        <input id="sub_language" type="button" value="发送" title="点击即可发送您的留言哦" onclick="send_lan()">
+        <p>您还可以输入 <span id="control_lan_num">150</span>个字</p>
+    </div>
+</form>
+<iframe id="lan_rf" name="lan_rf" src="about:blank" style="display:none"></iframe>
+<!--留言板结束-->
+
+<!--换肤开始-->
+<div id="skinBox">
+    <div id="skin_header">
+        <ol>
+            <li class="skin_active" title="限量皮肤供你选择">推荐</li>
+            <li title="平淡无奇之精美纯色">纯色</li>
+            <li title="我使用过的主题或皮肤背景">我的</li>
+        </ol>
+    </div>
+    <div id="skin_middle">
+        <ul id="total_ul">
+            <li>
+                <p class="hostName">主题</p>
+                <div id="skin_middle_top" class="skin_middle_top">
+                    <ul>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName1.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>拨云见日</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName2.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>缘来是你</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName3.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>漫天雪花</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName4.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>幽静古村</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName5.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>万籁俱寂</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName6.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>白毛跌地</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName7.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>脚印朝天</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                        <li>
+                            <img class="hostNamePicture" src="images/skinHostName8.jpg" alt="">
+                            <div class="skin_sta_override">
+                                <p>太清浮尘</p>
+                                <span>0</span>人已使用过
+                            </div>
+                            <img class="hostName_rightPic" src="images/right.png" alt="">
+                        </li>
+                    </ul>
+                    <div id="many_line" class="many_line"></div>
+                    <div id="skin_many">
+                        <span id="skinQuilty" title="点击可查看更多主题背景">更多</span>
+                    </div>
+                    <p class="skinPic_label">皮肤</p>
+                    <div id="skinPic" class="skinPic">
+                        <ol>
+                            <li>
+                                <img class="skin_count" src="images/skin1.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>碧雨滂沱</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin2.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>晶莹剔透</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin3.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>黄颜诱人</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin4.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>红尘缭绕</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin5.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>阳照密林</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin6.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>无量星河</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin7.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>大千世界</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                            <li>
+                                <img class="skin_count" src="images/skin8.jpg" alt="">
+                                <div class="skinPic_sta_override">
+                                    <p>暗淡微光</p>
+                                    <span>0</span>人已使用过
+                                </div>
+                                <img class="skinPic_rightBottomMark" src="images/right.png" alt="">
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <ul id="skinPurity_oUl">
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                    <li>
+                        <div class="skinPurity_sta_override"></div>
+                        <img src="images/right.png" alt="">
+                    </li>
+                </ul>
+            </li>
+            <li id="skin_totalUlFinalLi">
+                <div id="oo" style="width: 100%;height: 100%;position: absolute;top: 0;">
+                    <p class="myRecHSkin_hostName">主题</p>
+                    <ol id="myRecHSkin" class="myRecHSkin">
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<div class="myRecHSkin_sta1">拨云见日</div>-->
+                        <!--<div class="myRecHSkin_sta2">缘来是你</div>-->
+                        <!--<div class="myRecHSkin_sta3">漫天雪花</div>-->
+                        <!--<div class="myRecHSkin_sta4">幽静古村</div>-->
+                        <!--<div class="myRecHSkin_sta5">万籁俱寂</div>-->
+                        <!--<div class="myRecHSkin_sta6">红毛跌地</div>-->
+                        <!--<div class="myRecHSkin_sta7">脚印朝天</div>-->
+                        <!--<div class="myRecHSkin_sta8">太清浮尘</div>-->
+                        <img class="myRecHSkin_rightMark1" src="images/right.png" alt="">
+                    </ol>
+                    <p class="myRecSkinPic_skinPic">皮肤</p>
+                    <ol id="myRecSkinPic" class="myRecSkinPic">
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <!--<li></li>-->
+                        <img id="posMyRecSkinPic_mark" src="images/right.png" alt="">
+                    </ol>
+                    <div id="definedScroll">
+                        <div id="definedScrollBar"></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="skin_footer">
+        <div class="skin_footer_checkbox">
+            <input style="cursor: pointer" type="checkbox" name="ck_moveBar" id="ck_moveBar">
+        </div>
+        <div class="skin_transparent">皮肤背景透明</div>
+        <div class="moveBar">
+            <span id="moveBar_label">100</span>&nbsp;%
+        </div>
+        <img id="moveBar_pic" src="images/moveBar.png" alt="">
+        <div id="precent">
+            <div id="pre_left">
+                <div class="pre_left_children"></div>
+            </div>
+            <span class="pre_left_bot">|</span>
+            <div class="pre_right">
+                <p>100%</p>
+                <p>50%</p>
+                <p>0%</p>
+            </div>
+        </div>
+        <div id="override"></div>
+    </div>
+</div>
+<!--换肤结束-->
+
+<!--个人资料开始-->
+<form id="myAlterMsgForm" action="../servlets/alterServlet" method="post" target="msg_rf">
+    <div id="alterMsg">
+        <div class="alterMsg_div1">
+            <span>用户名：</span>
+            <div class="alterMsg_div1_inp" id="alterMsg_div1_inp">
+                <input type="text" id="alterMsg_txt" placeholder="请先登录您的用户" name="alterMsg_userName">
+                <p id="verify_alterMsgTxt">用户名不能修改！</p>
+            </div>
+        </div>
+        <div class="alterMsg_div2">
+            <span>原密码：</span>
+            <div class="alterMsg_div2_inp">
+                <input type="password" id="alterMsg_pwd" onkeyup="verifyAlterPwd()" placeholder="请先登录您的用户">
+                <p id="verify_alterMsgPwd"></p>
+                <div id="s_h_pwd" title="显示/隐藏密码"></div>
+            </div>
+        </div>
+        <div class="alterMsg_div3">
+            <span>新密码：</span>
+            <div class="alterMsg_div3_inp">
+                <input type="password" id="alterMsg_newPwd" name="alterMsg_userNewPwd" placeholder="请输入您要修改的密码">
+            </div>
+        </div>
+        <div class="alterMsg_div4">
+            <span>重复新：</span>
+            <div class="alterMsg_div4_inp">
+                <input type="password" id="alterMsg_newRepPwd" placeholder="请重复输入您要修改的密码" name="alterMsg_userNewRepPwd">
+            </div>
+        </div>
+        <div id="alter2"></div>
+        <div class="alterButtonBottom">
+            <input type="hidden" value="" name="name" id="hide1">
+            <input type="hidden" value="" name="pwd" id="hide2">
+            <input id="establish_alter" type="button" value="马上修改">
+        </div>
+    </div>
+</form>
+<iframe id="msg_rf" name="msg_rf" src="about:blank;" style="display: none;"></iframe>
+<!--个人资料结束-->
+
+<!--商城开始-->
+<div id="shopping">
+    <img class="blueBar" src="images/blueBar.jpg" alt="">
+    <div class="shopping_header">
+        <ol>
+            <li></li>
+            <li>听音乐，找我们</li>
+            <li>
+                <span id="selectList">查看历史订单</span>
+            </li>
+            <div id="historyList">
+                &nbsp;&nbsp;&nbsp;您还没有订单哦！
+            </div>
+        </ol>
+        <ul>
+            <li id="shoppingLogin" onclick="showLoginBox()">登录</li>
+            <li id="shoppingReg" onclick="showRegisterBox()">注册</li>
+            <li>|</li>
+            <li id="shoppingIcon" title="购物车"></li>
+        </ul>
+        <div id="shoppingIcon_total">0</div>
+    </div>
+    <div id="shopping_middle" class="shopping_middle">
+        <ul>
+            <li>
+                <dl>
+                    <dt><img src="images/erji1.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥100.00</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt><img src="images/erji2.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥111.11</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum1">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase1" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle1" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon1" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt><img src="images/erji6.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥166.66</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum2">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase2" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle2" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon2" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <dl>
+                    <dt><img src="images/erji3.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥133.33</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum3">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase3" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle3" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon3" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt><img src="images/erji4.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥188.88</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum4">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase4" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle4" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon4" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt><img src="images/erji5.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥222.22</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum5">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase5" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle5" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon5" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <dl>
+                    <dt><img src="images/erji7.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥250.00</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum6">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase6" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle6" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon6" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt><img src="images/erji8.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥288.88</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum7">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase7" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle7" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon7" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt><img src="images/erji9.jpg" class="erji_pic"></dt>
+                    <dd>
+                        <div>
+                            <span class="shopMoney">￥299.99</span>
+                            <img src="images/selfSale.png" alt="" title="佳哥团队自营，品质保障">
+                            <strong><span id="shop_purchase_pepNum8">0 </span>人已付款</strong>
+                        </div>
+                        <div>佳哥组自创的独门耳机</div>
+                        <div>
+                            <div id="instancePurchase8" class="instancePurchase">
+                                <img src="images/taobao.jpg" alt="">
+                            </div>
+                            <div id="in_shop_vehicle8" class="in_shop_vehicle">
+                                <div id="in_shop_vehicle_icon8" class="in_shop_vehicle_icon">
+                                </div>
+                                <span class="addIn_shop_vehicle">加入购物车</span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    <div class="shopping_footer">
+        <span id="smallYuHao"></span>
+        <span id="shop_dis_1">1</span>
+        <span>/&nbsp;3</span>
+        <span id="bigYuHao"></span>
+    </div>
+</div>
+<!--商城结束-->
+
+<!--购物车开始-->
+<div id="shopping_in">
+    <h2>全部商品</h2>
+    <div class="shopping_in_middle">购物车里没有任何商品！</div>
+    <div class="shopping_in_total">
+        <div class="shopping_in_total_left">
+            ￥00.00
+        </div>
+        <div class="shopping_in_total_right">
+            <div id="submit_list">提交订单</div>
+        </div>
+    </div>
+    <div class="shopping_in_footer">
+        <div id="continue_shopping">继续一品商城</div>
+    </div>
+</div>
+<!--购物车结束-->
+
+<!--收藏歌曲箱开始-->
+<div id="store">
+    <div class="store_top">
+        <span class="myLike">我喜欢</span>
+        <span>下载歌曲</span>
+    </div>
+    <div>
+        <div id="store_bottom1" class="store_bottom">
+
+        </div>
+        <div id="store_bottom2" class="store_bottom" style="display: none;"></div>
+    </div>
+</div>
+<!--收藏歌曲箱结束-->
+<!--二级界面结束-->
+
+<!--一级界面开始-->
+<div id="box">
+    <!--导航栏开始-->
+    <div id="nav">
+        <div class="logo" title="这是佳哥组制作的logo">凯</div>
+        <ul>
+            <li><a href="javascript:;" title="点击首页即可刷新页面" onclick="window.location.reload()">首页</a></li>
+            <li><a href="javascript:;" title="登录享受清亮动听妙歌" onclick="showLoginBox()">登录</a></li>
+            <li><a href="javascript:;" title="注册享受清亮动听妙歌" onclick="showRegisterBox()">注册</a></li>
+            <li><a href="javascript:;" title="登录状态" id="loginState">登态</a></li>
+            <li><a href="javascript:;" title="随意上传百万高清歌手歌曲">下载</a></li>
+            <li><a href="javascript:;" title="更换皮肤界面高清美化" onclick="showSkinBox()">换肤</a></li>
+            <li><a href="javascript:;" title="进入商城可以购买您需要的物品哦" onclick="showShoppingBox()">商城</a></li>
+            <li><a href="javascript:;" title="留言可享受更好的服务" onclick="show_lan_box()">系统留言</a></li>
+            <li><a href="javascript:;" title="查看和修改个人资料" onclick="showAlterMsg()">个人资料</a></li>
+        </ul>
+        <div class="select">
+            <div class="_select">
+                <input type="text" id="txt" name="text" placeholder="请输入歌名/专辑/歌手">
+                <img id="sel" title="搜索一下" src="images/selectBtn.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!--导航栏结束-->
+
+    <!--轮播图开始-->
+    <div id="broadcast_pic">
+        <ul>
+            <li class="bc_pic"><a href="javascript:;"><img src="images/4.jpg" alt=""></a></li>
+            <li class="bc_pic"><a href="javascript:;"><img src="images/2.jpg" alt=""></a></li>
+            <li class="bc_pic"><a href="javascript:;"><img src="images/3.jpg" alt=""></a></li>
+            <li class="bc_pic"><a href="javascript:;"><img src="images/1.jpg" alt=""></a></li>
+            <li class="bc_pic"><a href="javascript:;"><img src="images/5.jpg" alt=""></a></li>
+        </ul>
+        <!--<div id="statement">-->
+        <!--<span class="broadcast_sta">想赢限量好礼，请点击我哟！</span>-->
+        <!--<span class="broadcast_sta">最美好的时光在等待你，请点击我哟！</span>-->
+        <!--<span class="broadcast_sta">聆听美妙的电视歌曲，请点击我哟！</span>-->
+        <!--<span class="broadcast_sta">海量电视歌曲在等你，请点击我哟！</span>-->
+        <!--<span class="broadcast_sta">独家热播让您倾听清歌妙曲，请点击我哟！</span>-->
+        <!--</div>-->
+        <ol>
+            <li class="broadcast_btn active">1</li>
+            <li class="broadcast_btn">2</li>
+            <li class="broadcast_btn">3</li>
+            <li class="broadcast_btn">4</li>
+            <li class="broadcast_btn">5</li>
+        </ol>
+        <a class="left_btn" href="javascript:;"></a>
+        <a class="right_btn" href="javascript:;"></a>
+    </div>
+    <!--轮播图结束-->
+
+    <!--热门推荐开始-->
+    <div id="recommentation">
+        <div class="rec_top">
+            <h2 title="热门推荐海量歌曲，等你来哦">热门推荐</h2>
+            <ul id="ul_language">
+                <li class="language" title="海量华语敬请收听">华语<span>   |   </span></li>
+                <li title="一首高山流水清歌，让你万古惆怅">流行<span>   |   </span></li>
+                <li title="韩国美女为你引吭高歌">日韩<span>   |   </span></li>
+                <li title="欧美范歌曲点燃你心中的初恋">欧美</li>
+            </ul>
+            <a title="更多歌曲在线期待哦" href="javascript:;" id="many" style="font-style:italic;letter-spacing: 1px;">更多+</a>
+        </div>
+        <div id="rec_txt">
+            <ul class="ul_rec">
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom1.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record1" class="record"><span id="record_number">0</span>人收听</span>
+                    <p title="华语尽情欣赏"><!--华语尽情欣赏-->荷塘月色~尽情欣赏</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom2.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark2">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record2" class="record"><span id="record_number2">0</span>人收听</span>
+                    <p title="华语让你尽情倾诉"><!--华语让你尽情倾诉-->尽头~尽情倾诉</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom3.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark3">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record3" class="record"><span id="record_number3">0</span>人收听</span>
+                    <p title="听华语，可沁人心脾"><!--听华语，可沁人心脾-->天后~沁人心脾</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom4.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark4">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record4" class="record"><span id="record_number4">0</span>人收听</span>
+                    <p title="华语让你思绪万丈巅峰"><!--华语让你思绪万丈巅峰-->狂流~思绪万丈巅峰</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom5.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark5">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record5" class="record"><span id="record_number5">0</span>人收听</span>
+                    <p title="优质华语在等你哦"><!--优质华语在等你哦-->伤心花~心花怒放</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom6.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark6">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record6" class="record"><span id="record_number6">0</span>人收听</span>
+                    <p title="一首华语，定解你千愁"><!--一首华语，定解你千愁-->没有眼泪的哭泣~千愁</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom7.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark7">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record7" class="record"><span id="record_number7">0</span>人收听</span>
+                    <p title="华语如诗歌一般会心"><!--华语如诗歌一般会心-->记事本~如诗歌会心</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom8.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark8">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record8" class="record"><span id="record_number8">0</span>人收听</span>
+                    <p title="喜欢华语来试听哦"><!--喜欢华语来试听哦-->星语心愿~了结尘缘</p>
+                </li>
+            </ul>
+            <ul class="ul_rec">
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom9.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark9">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record9" class="record"><span id="record_number9">0</span>人收听</span>
+                    <p title="流行妙曲千古叹">流行妙曲千古叹</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom10.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark10">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record10" class="record"><span id="record_number10">0</span>人收听</span>
+                    <p title="流芳千古之美曲">流芳千古之美曲</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom11.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark11">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record11" class="record"><span id="record_number11">0</span>人收听</span>
+                    <p title="随时代脚步流行">随时代脚步流行</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom12.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark12">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record12" class="record"><span id="record_number12">0</span>人收听</span>
+                    <p title="如流星般划过你身边">如流星般划过你身边</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom13.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark13">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record13" class="record"><span id="record_number13">0</span>人收听</span>
+                    <p title="烟消云散~让你憧憬">烟消云散~让你憧憬</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom14.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark14">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record14" class="record"><span id="record_number14">0</span>人收听</span>
+                    <p title="清歌妙曲，时刻在等你">清歌妙曲，时刻在等你</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom15.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark15">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record15" class="record"><span id="record_number15">0</span>人收听</span>
+                    <p title="听流行曲，极速飞跃">听流行曲，极速飞跃</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom16.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark16">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record16" class="record"><span id="record_number16">0</span>人收听</span>
+                    <p title="喜欢流行曲快来哦">喜欢流行曲快来哦</p>
+                </li>
+            </ul>
+            <ul class="ul_rec">
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom17.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark17">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record17" class="record"><span id="record_number17">0</span>人收听</span>
+                    <p title="日韩清歌伴随你">日韩清歌伴随你</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom18.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark18">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record18" class="record"><span id="record_number18">0</span>人收听</span>
+                    <p title="日韩清歌让你无尽诉说">日韩清歌让你无尽诉说</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom19.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark19">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record19" class="record"><span id="record_number19">0</span>人收听</span>
+                    <p title="日韩清歌陪你走天涯">日韩清歌陪你走天涯</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom20.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark20">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record20" class="record"><span id="record_number20">0</span>人收听</span>
+                    <p title="优雅品质神曲动人心">优雅品质神曲动人心</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom21.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark21">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record21" class="record"><span id="record_number21">0</span>人收听</span>
+                    <p title="日韩清歌委婉动听">日韩清歌委婉动听</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom22.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark22">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record22" class="record"><span id="record_number22">0</span>人收听</span>
+                    <p title="高山流水之曲无尽享受">高山流水之曲无尽享受</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom23.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark23">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record23" class="record"><span id="record_number23">0</span>人收听</span>
+                    <p title="日韩清歌,余音缭绕">日韩清歌,余音缭绕</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom24.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark24">
+                        <div class="div1">
+                        </div>
+                        <div class="div2">
+                            ||
+                        </div>
+                    </span>
+                    <span id="record24" class="record"><span id="record_number24">0</span>人收听</span>
+                    <p title="喜欢日韩美曲快来哦">喜欢日韩美曲快来哦</p>
+                </li>
+            </ul>
+            <ul class="ul_rec">
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom25.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark25">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record25" class="record"><span id="record_number25">0</span>人收听</span>
+                    <p title="欧美雅致音乐伴你行">欧美雅致音乐伴你行</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom26.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark26">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record26" class="record"><span id="record_number26">0</span>人收听</span>
+                    <p title="欧美佳曲，让人陶醉">欧美佳曲，让人陶醉</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom27.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark27">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record27" class="record"><span id="record_number27">0</span>人收听</span>
+                    <p title="欧美音乐，感情之至">欧美音乐，感情之至</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom28.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark28">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record28" class="record"><span id="record_number28">0</span>人收听</span>
+                    <p title="欧美高歌，倾诉淋漓">欧美高歌，倾诉淋漓</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom29.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark29">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record29" class="record"><span id="record_number29">0</span>人收听</span>
+                    <p title="海量歌曲敬请等待">海量歌曲敬请等待</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom30.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark30">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record30" class="record"><span id="record_number30">0</span>人收听</span>
+                    <p title="欧美之声，牵人以心">欧美之声，牵人以心</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom31.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark31">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record31" class="record"><span id="record_number31">0</span>人收听</span>
+                    <p title="如忘情水一般洗涤心境">如忘情水一般洗涤心境</p>
+                </li>
+                <li>
+                    <div>
+                        <div class="div_child">
+                            <img src="images/recom32.jpg" alt="">
+                        </div>
+                    </div>
+                    <span class="play_mark32">
+                            <div class="div1">
+                            </div>
+                            <div class="div2">
+                                ||
+                            </div>
+                        </span>
+                    <span id="record32" class="record"><span id="record_number32">0</span>人收听</span>
+                    <p title="一曲欧美范曲，铿锵有力">欧美范曲，铿锵有力</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--热门推荐结束-->
+
+    <!--mv音频开始-->
+    <div id="mv">
+        <p class="mv_title">MV</p>
+        <ul class="mv_mid">
+            <div id="mv_many">更多</div>
+            <li>
+                <img src="images/zhoujielun.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">aMEI-不该</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/qiuyongchuan.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">十一年</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/lengmo.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">听歌的人...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/guichu.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">鬼畜是人...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/ertong.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">小螺号</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/shaonv.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">少女时代</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/MAM.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">MAM...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/red%20velvet.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">Red...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/zhoujielun.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">aMEI-不该</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/qiuyongchuan.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">十一年</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/lengmo.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">听歌的人...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/guichu.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">鬼畜是人...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/ertong.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">小螺号</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/shaonv.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">少女时代</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/MAM.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">MAM...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/red%20velvet.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">Red...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/zhoujielun.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">aMEI-不该</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/qiuyongchuan.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">十一年</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/lengmo.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">听歌的人...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/guichu.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">鬼畜是人...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/ertong.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">小螺号</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/shaonv.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">少女时代</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/MAM.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">MAM...</p>
+                <div class="mv_btn"></div>
+            </li>
+            <li>
+                <img src="images/red%20velvet.jpg" alt="">
+                <div class="mv_num">
+                    <div>
+                        <span></span>
+                        <span><strong>0 </strong>人观看</span>
+                    </div>
+                </div>
+                <p class="mv_name">Red...</p>
+                <div class="mv_btn"></div>
+            </li>
+        </ul>
+    </div>
+    <!--mv音频结束-->
+
+    <!--排行榜开始-->
+    <div id="rank_list">
+        <p class="rank_list_title">排行榜</p>
+        <div class="rank_list_smallTitle">
+            <div id="rank_list_left" class="rank_list_left">
+                <p>三大榜单</p>
+                <div class="rankSongMark">歌曲</div>
+                <div>歌手</div>
+                <div>专辑</div>
+            </div>
+            <div id="rank_list_right" class="rank_list_right">
+                <div>
+                    <ul>
+                        <div class="rank_list_right_topTitle">
+                            <span>飙升歌曲榜</span>
+                            <span onclick="showStoreBox()">收藏箱</span>
+                        </div>
+                        <div id="rank_list_right_middle">
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li id="replace01">
+                                    <div>
+                                        <input type="checkbox" name="rankChb" style="cursor: pointer;">
+                                    </div>
+                                    <div>1</div>
+                                    <div></div>
+                                    <div>张阳明-他不愿</div>
+                                    <ul>
+                                        <li title="试听" id="trySong1"></li>
+                                        <li title="播放" id="rank_play1"></li>
+                                        <li title="下载" id="download1"></li>
+                                        <li><span style="color:yellow;" id="download_peo">12</span>人下载</li>
+                                        <li id="collection1">收藏歌曲</li>
+                                        <li id="look1">查看歌曲详情</li>
+                                        <div id="look_ge_details">
+                                            <div id="lookMsgImgMark"><img src="images/rank_top.png" alt=""></div>
+                                            <div id="lookMsg">
+                                                <div id="lookMsg_txt">
+                                                    歌词---
+                                                    他不愿 (《错生》网络剧片尾曲) - 张阳阳
+
+                                                    词：李泊龙
+
+                                                    曲：李泊龙
+
+                                                    编曲：孙沛
+
+                                                    混音：李冠奥
+
+                                                    制作人：承泽训
+
+                                                    时间静止在他离开的那天
+
+                                                    也许已经忘了
+
+                                                    也许已经变了
+
+                                                    他紧紧抱着你
+
+                                                    他不停说抱歉
+
+                                                    为何他不能让你多留一点
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    直到他们又相见对
+                                                </div>
+                                                <div id="lookMsg_rightBox">
+                                                    <div id="moveWheel"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li id="replace02">
+                                    <div>
+                                        <input type="checkbox" name="rankChb" style="cursor: pointer;">
+                                    </div>
+                                    <div>2</div>
+                                    <div></div>
+                                    <div>陈皓宸-要死要活</div>
+                                    <ul>
+                                        <li title="试听" id="trySong2"></li>
+                                        <li title="播放" id="rank_play2"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">11</span>人下载</li>
+                                        <li id="collection2">收藏歌曲</li>
+                                        <li id="look2">查看歌曲详情</li>
+                                        <div id="look_ge_details2">
+                                            <div id="lookMsgImgMark2"><img src="images/rank_top.png" alt=""></div>
+                                            <div id="lookMsg2">
+                                                <div id="lookMsg_txt2">
+                                                    歌词---
+                                                    他不愿 (《错生》网络剧片尾曲) - 张阳阳
+
+                                                    词：李泊龙
+
+                                                    曲：李泊龙
+
+                                                    编曲：孙沛
+
+                                                    混音：李冠奥
+
+                                                    制作人：承泽训
+
+                                                    时间静止在他离开的那天
+
+                                                    也许已经忘了
+
+                                                    也许已经变了
+
+                                                    他紧紧抱着你
+
+                                                    他不停说抱歉
+
+                                                    为何他不能让你多留一点
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    直到他们又相见对
+                                                </div>
+                                                <div id="lookMsg_rightBox2">
+                                                    <div id="moveWheel2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb" style="cursor: pointer;">
+                                    </div>
+                                    <div>3</div>
+                                    <div></div>
+                                    <div>薛之谦-天后</div>
+                                    <ul>
+                                        <li title="试听" id="trySong3"></li>
+                                        <li title="播放" id="rank_play3"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">10</span>人下载</li>
+                                        <li id="collection3">收藏歌曲</li>
+                                        <li id="look3">查看歌曲详情</li>
+                                        <div id="look_ge_details3">
+                                            <div id="lookMsgImgMark3"><img src="images/rank_top.png" alt=""></div>
+                                            <div id="lookMsg3">
+                                                <div id="lookMsg_txt3">
+                                                    歌词---
+                                                    他不愿 (《错生》网络剧片尾曲) - 张阳阳
+
+                                                    词：李泊龙
+
+                                                    曲：李泊龙
+
+                                                    编曲：孙沛
+
+                                                    混音：李冠奥
+
+                                                    制作人：承泽训
+
+                                                    时间静止在他离开的那天
+
+                                                    也许已经忘了
+
+                                                    也许已经变了
+
+                                                    他紧紧抱着你
+
+                                                    他不停说抱歉
+
+                                                    为何他不能让你多留一点
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    直到他们又相见对
+                                                </div>
+                                                <div id="lookMsg_rightBox3">
+                                                    <div id="moveWheel3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb" style="cursor: pointer;">
+                                    </div>
+                                    <div>4</div>
+                                    <div></div>
+                                    <div>萱萱-我以为</div>
+                                    <ul>
+                                        <li title="试听" id="trySong4"></li>
+                                        <li title="播放" id="rank_play4"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">9</span>人下载</li>
+                                        <li id="collection4">收藏歌曲</li>
+                                        <li id="look4">查看歌曲详情</li>
+                                        <div id="look_ge_details4">
+                                            <div id="lookMsgImgMark4"><img src="images/rank_top.png" alt=""></div>
+                                            <div id="lookMsg4">
+                                                <div id="lookMsg_txt4">
+                                                    歌词---
+                                                    他不愿 (《错生》网络剧片尾曲) - 张阳阳
+
+                                                    词：李泊龙
+
+                                                    曲：李泊龙
+
+                                                    编曲：孙沛
+
+                                                    混音：李冠奥
+
+                                                    制作人：承泽训
+
+                                                    时间静止在他离开的那天
+
+                                                    也许已经忘了
+
+                                                    也许已经变了
+
+                                                    他紧紧抱着你
+
+                                                    他不停说抱歉
+
+                                                    为何他不能让你多留一点
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    过去了这么久
+
+                                                    他一直在想念
+
+                                                    你爱的那首歌
+
+                                                    他还没唱完全
+
+                                                    他看见你的脸
+
+                                                    像看见他出现
+
+                                                    你和他之间已分不清界限
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    他不愿让你一个人
+
+                                                    独自过春秋夏冬天
+
+                                                    他不愿让你一个人
+
+                                                    完成两个人的心愿
+
+                                                    他不愿让他一个人
+
+                                                    活在另一个的世界
+
+                                                    他愿意为了你
+
+                                                    勇敢走出从前
+
+                                                    直到他们又相见
+
+                                                    直到他们又相见对
+                                                </div>
+                                                <div id="lookMsg_rightBox4">
+                                                    <div id="moveWheel4"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb2" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb2" style="cursor: pointer;">
+                                    </div>
+                                    <div>5</div>
+                                    <div></div>
+                                    <div>孟朕霆-真的没关系</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">8</span>人下载</li>
+                                        <li id="collection5">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb2" style="cursor: pointer;">
+                                    </div>
+                                    <div>6</div>
+                                    <div></div>
+                                    <div>潘辰-只会更寂寞</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">7</span>人下载</li>
+                                        <li id="collection6">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb2" style="cursor: pointer;">
+                                    </div>
+                                    <div>7</div>
+                                    <div></div>
+                                    <div>杨启斯-怎么还没睡</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">6</span>人下载</li>
+                                        <li id="collection7">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb2" style="cursor: pointer;">
+                                    </div>
+                                    <div>8</div>
+                                    <div></div>
+                                    <div>贺敬轩-罗曼蒂克的爱情</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">5</span>人下载</li>
+                                        <li id="collection8">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb3" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb3" style="cursor: pointer;">
+                                    </div>
+                                    <div>9</div>
+                                    <div></div>
+                                    <div>霍尊-粉墨</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">4</span>人下载</li>
+                                        <li id="collection9">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb3" style="cursor: pointer;">
+                                    </div>
+                                    <div>10</div>
+                                    <div></div>
+                                    <div>蒋雪儿-真的好可惜</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">3</span>人下载</li>
+                                        <li id="collection10">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb3" style="cursor: pointer;">
+                                    </div>
+                                    <div>11</div>
+                                    <div></div>
+                                    <div>大壮-差一步</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">2</span>人下载</li>
+                                        <li id="collection11">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb3" style="cursor: pointer;">
+                                    </div>
+                                    <div>12</div>
+                                    <div></div>
+                                    <div>江苏泷-追光者</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">1</span>人下载</li>
+                                        <li id="collection12">收藏歌曲</li>
+                                        <li>查看歌曲详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        <div id="rank_list_right_bto">
+                            <a id="rank_list_right_bto_leftBtn" href="javascript:;"></a>
+                            <div>
+                                <span id="rank_list_right_bto_calcNum">1</span>/3
+                            </div>
+                            <a id="rank_list_right_bto_rightBtn" href="javascript:;"></a>
+                        </div>
+                    </ul>
+                    <ul>
+                        <div class="rank_list_right_topTitle">
+                            <span>火爆歌手榜</span>
+                            <span onclick="showStoreBox()">收藏箱</span>
+                        </div>
+                        <div id="rank_list_right_middle2">
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb_1" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_1" style="cursor: pointer;">
+                                    </div>
+                                    <div>1</div>
+                                    <div></div>
+                                    <div>冷漠</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">20</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_1" style="cursor: pointer;">
+                                    </div>
+                                    <div>2</div>
+                                    <div></div>
+                                    <div>张杰</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">19</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_1" style="cursor: pointer;">
+                                    </div>
+                                    <div>3</div>
+                                    <div></div>
+                                    <div>羽泉</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">18</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_1" style="cursor: pointer;">
+                                    </div>
+                                    <div>4</div>
+                                    <div></div>
+                                    <div>乌拉多恩</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">16</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb_2" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_2" style="cursor: pointer;">
+                                    </div>
+                                    <div>5</div>
+                                    <div></div>
+                                    <div>林忆莲</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">14</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_2" style="cursor: pointer;">
+                                    </div>
+                                    <div>6</div>
+                                    <div></div>
+                                    <div>胡子悦</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">10</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_2" style="cursor: pointer;">
+                                    </div>
+                                    <div>7</div>
+                                    <div></div>
+                                    <div>韩宝仪</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">9</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_2" style="cursor: pointer;">
+                                    </div>
+                                    <div>8</div>
+                                    <div></div>
+                                    <div>林俊杰</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">8</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb_3" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_3" style="cursor: pointer;">
+                                    </div>
+                                    <div>9</div>
+                                    <div></div>
+                                    <div>王佩瑜</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">4</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_3" style="cursor: pointer;">
+                                    </div>
+                                    <div>10</div>
+                                    <div></div>
+                                    <div>大鹏</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">3</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_3" style="cursor: pointer;">
+                                    </div>
+                                    <div>11</div>
+                                    <div></div>
+                                    <div>王瑞淇</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">2</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb_3" style="cursor: pointer;">
+                                    </div>
+                                    <div>12</div>
+                                    <div></div>
+                                    <div>徐浩</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li><span style="color:yellow;">1</span>人投票</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        <div id="rank_list_right_bto2">
+                            <a id="rank_list_right_bto_leftBtn2" href="javascript:;"></a>
+                            <div>
+                                <span id="rank_list_right_bto_calcNum2">1</span>/3
+                            </div>
+                            <a id="rank_list_right_bto_rightBtn2" href="javascript:;"></a>
+                        </div>
+                    </ul>
+                    <ul>
+                        <div class="rank_list_right_topTitle">
+                            <span>独家专辑榜</span>
+                            <span onclick="showStoreBox()">收藏箱</span>
+                        </div>
+                        <div id="rank_list_right_middle3">
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb__1" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__1" style="cursor: pointer;">
+                                    </div>
+                                    <div>1</div>
+                                    <div></div>
+                                    <div>网络红歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2017/11/21日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__1" style="cursor: pointer;">
+                                    </div>
+                                    <div>2</div>
+                                    <div></div>
+                                    <div>DJ热歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2017/10/30日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__1" style="cursor: pointer;">
+                                    </div>
+                                    <div>3</div>
+                                    <div></div>
+                                    <div>华语新歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2017/10/05日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__1" style="cursor: pointer;">
+                                    </div>
+                                    <div>4</div>
+                                    <div></div>
+                                    <div>欧美新歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2017/09/20日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb__2" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__2" style="cursor: pointer;">
+                                    </div>
+                                    <div>5</div>
+                                    <div></div>
+                                    <div>韩国新歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2016/05/23日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__2" style="cursor: pointer;">
+                                    </div>
+                                    <div>6</div>
+                                    <div></div>
+                                    <div>日本新歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2016/03/11日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__2" style="cursor: pointer;">
+                                    </div>
+                                    <div>7</div>
+                                    <div></div>
+                                    <div>天籁之战</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2016/02/28日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__2" style="cursor: pointer;">
+                                    </div>
+                                    <div>8</div>
+                                    <div></div>
+                                    <div>梦想的声音</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2016/01/18日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <ol>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" id="headerChb__3" style="cursor: pointer;">
+                                    </div>
+                                    <span>全选</span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__3" style="cursor: pointer;">
+                                    </div>
+                                    <div>9</div>
+                                    <div></div>
+                                    <div>粤语新歌</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2015/11/19日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__3" style="cursor: pointer;">
+                                    </div>
+                                    <div>10</div>
+                                    <div></div>
+                                    <div>校园歌曲</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2015/08/07日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__3" style="cursor: pointer;">
+                                    </div>
+                                    <div>11</div>
+                                    <div></div>
+                                    <div>洗脑神曲</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2015/07/29日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>
+                                        <input type="checkbox" name="rankChb__3" style="cursor: pointer;">
+                                    </div>
+                                    <div>12</div>
+                                    <div></div>
+                                    <div>中文DJ</div>
+                                    <ul>
+                                        <li title="试听"></li>
+                                        <li title="播放"></li>
+                                        <li title="下载"></li>
+                                        <li>2015/06/25日发行</li>
+                                        <li>查看详情</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        <div id="rank_list_right_bto3">
+                            <a id="rank_list_right_bto_leftBtn3" href="javascript:;"></a>
+                            <div>
+                                <span id="rank_list_right_bto_calcNum3">1</span>/3
+                            </div>
+                            <a id="rank_list_right_bto_rightBtn3" href="javascript:;"></a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--排行榜结束-->
+
+    <!--排行榜试听开始-->
+    <audio loop="loop" id="audio_rank1">
+        <source src="music/shiTing-taBuYuan.mp3" type="audio/mp3">
+    </audio>
+    <audio loop="loop" id="audio_rank2">
+        <source src="music/shiTing-yao.mp3" type="audio/mp3">
+    </audio>
+    <audio loop="loop" id="audio_rank3">
+        <source src="music/shiTing-tianHou.mp3" type="audio/mp3">
+    </audio>
+    <audio loop="loop" id="audio_rank4">
+        <source src="music/shiTing-woYiWei.mp3" type="audio/mp3">
+    </audio>
+    <!--排行榜试听结束-->
+
+    <!--评论区开始-->
+    <form id="myCommentForm" action="../servlets/commentServlet" method="post" target="comment_if">
+        <div id="comment">
+            <p class="commentTitle">评论区</p>
+            <ol>
+                <li class="commentSongHover1">歌曲</li>
+                <li>歌手</li>
+                <li>专辑</li>
+            </ol>
+            <textarea maxlength="250" name="commentTxtArea" disabled="disabled" id="commentTxtArea" cols="131" rows="9" onkeyup="comment_zi_limit(this)" placeholder="期待您的神评论......"></textarea>
+            <div class="posComment" id="posComment"><span id="loginComment1" onclick="showLoginBox()">登录 </span>,一触即发</div>
+            <div class="commentBoxBot">
+                <div id="face" title="表情"></div>
+                <ul id="faceNumber">
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ul>
+                <div id="overrideFace">
+                    <table cellpadding="0" cellspacing="0" border="">
+                        <tr class="tr1">
+                            <td title="微笑" id="td1"></td>
+                            <td title="撇嘴"></td>
+                            <td title="色"></td>
+                            <td title="发呆"></td>
+                            <td title="得意"></td>
+                        </tr>
+                        <tr class="tr2">
+                            <td title="流泪"></td>
+                            <td title="害羞"></td>
+                            <td title="闭嘴"></td>
+                            <td title="睡"></td>
+                            <td title="大哭"></td>
+                        </tr>
+                        <tr class="tr3">
+                            <td title="惊讶"></td>
+                            <td title="难过"></td>
+                            <td title="酷"></td>
+                            <td title="冷汗"></td>
+                            <td title="抓狂"></td>
+                        </tr>
+                    </table>
+                    <table class="table2" cellpadding="0" cellspacing="0" border="">
+                        <tr class="tr1">
+                            <td title="玫瑰"></td>
+                            <td title="凋谢"></td>
+                            <td title="示爱"></td>
+                            <td title="爱心"></td>
+                            <td title="心碎"></td>
+                        </tr>
+                        <tr class="tr2">
+                            <td title="炸弹"></td>
+                            <td title="刀"></td>
+                            <td title="足球"></td>
+                            <td title="瓢虫"></td>
+                            <td title="手机"></td>
+                        </tr>
+                        <tr class="tr3">
+                            <td title="礼物"></td>
+                            <td title="抱抱"></td>
+                            <td title="强"></td>
+                            <td title="喝彩"></td>
+                            <td title="握手"></td>
+                        </tr>
+                    </table>
+                    <table class="table3" cellpadding="0" cellspacing="0" border="">
+                        <tr class="tr1">
+                            <td title="勾引"></td>
+                            <td title="拳头"></td>
+                            <td title="差劲"></td>
+                            <td title="爱你"></td>
+                            <td title="No"></td>
+                        </tr>
+                        <tr class="tr2">
+                            <td title="哼哼哼"></td>
+                            <td title="吐舌头"></td>
+                            <td title="哇啊啊"></td>
+                            <td title="猥琐笑"></td>
+                            <td title="呦呦呦"></td>
+                        </tr>
+                        <tr class="tr3">
+                            <td title="委屈"></td>
+                            <td title="快哭了"></td>
+                            <td title="阴脸"></td>
+                            <td title="亲亲"></td>
+                            <td title="吓"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="face_right">
+                    <span>您还可以输入<span style="color:#f00;font-weight:bold;" id="com_res">250</span>个字</span>
+                    <div id="commentSend">发送</div>
+                </div>
+            </div>
+            <h3>已有评论&nbsp;(<span id="comment_num_bar">   0   </span>)&nbsp;条</h3>
+            <ul id="rec_comment">
+
+            </ul>
+            <input type="hidden" id="comment_hide" name="comment_hide">
+        </div>
+    </form>
+    <iframe id="comment_if" name="comment_if" src="about:blank" style="display: none;"></iframe>
+    <!--评论区结束-->
+
+    <!--歌手开始-->
+    <div id="song_peo">
+        <p>歌手</p>
+        <div class="song_mess_box">
+            <a href="javascript:;" id="prev_btn"></a>
+            <a href="javascript:;" id="next_btn"></a>
+            <div class="song_mess">
+                <ul>
+                    <li>
+                        <img src="images/xuezhiqian.jpg" alt="">
+                        <a href="javascript:;" class="song_sta">查看专辑信息</a>
+                    </li>
+                    <li>
+                        <img src="images/huge.jpg" alt="">
+                        <a href="javascript:;" class="song_sta">查看专辑信息</a>
+                    </li>
+                    <li>
+                        <img src="images/chenyixun%20.jpg" alt="">
+                        <a href="javascript:;" class="song_sta">查看专辑信息</a>
+                    </li>
+                    <li>
+                        <img src="images/dengziqi.jpg" alt="">
+                        <a href="javascript:;" class="song_sta">查看专辑信息</a>
+                    </li>
+                    <li>
+                        <img src="images/zhengyuan.jpg" alt="">
+                        <a href="javascript:;" class="song_sta">查看专辑信息</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ol id="3D_play">
+            <li>
+                <img id="play" src="images/xuezhiqian.jpg" alt="">
+                <div class="broad_mark"></div>
+            </li>
+            <li>
+                <img src="images/jianhongyi.jpg" alt="">
+                <div class="broad_mark"></div>
+            </li>
+            <li>
+                <img src="images/chenyixun%20.jpg" alt="">
+                <div class="broad_mark"></div>
+            </li>
+            <li>
+                <img src="images/tanweiwei.jpg" alt="">
+                <div class="broad_mark"></div>
+            </li>
+            <li>
+                <img src="images/huge.jpg" alt="">
+                <div class="broad_mark"></div>
+            </li>
+            <li>
+                <img src="images/dengziqi.jpg" alt="">
+                <div class="broad_mark"></div>
+            </li>
+        </ol>
+        <img class="fire" src="images/fire.gif" alt="">
+        <a href="javascript:;" class="sanD_play_sta">听更多优质音乐点我哟！</a>
+    </div>
+    <div id="footerStatement">
+        <span>关于我们</span>
+        <p></p>
+        <p>关于本音乐网站，由佳哥团队一手创作！</p>
+        <p>虽然本音乐网站有点假，没啥用，但影响是功不可没的！</p>
+        <p>非常感谢大家欣赏佳哥团队制作的音乐网站！</p>
+    </div>
+</div>
+<!--歌手结束-->
+<!--一级界面结束-->
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: "微软雅黑", "宋体";
+        }
+        #audioDemo{
+            width: 700px;
+            height: 400px;
+            border: 1px solid #999;
+            margin: 20px;
+            display: none;
+        }
+        #audioDemo #audioDemo_top{
+            width: 100%;
+            height: 40px;
+            background-color: #333;
+            cursor: move;
+        }
+        #audioDemo #audioDemo_top .audioDemo_top_leftLabel{
+            width: 150px;
+            height: 100%;
+            float: left;
+            text-align: left;
+            text-indent: 15px;
+            line-height: 40px;
+            font-size: 20px;
+            letter-spacing: 2px;
+            font-style: italic;
+            color: #fff;
+        }
+        #audioDemo #audioDemo_top .audioDemo_top_rightLabel{
+            width: 30px;
+            height: 32px;
+            float: right;
+            margin-top: 5px;
+            margin-right: 5px;
+            background: url("../images/pwd-icons-new.png") -42px -136px no-repeat;
+        }
+        #audioDemo #audioDemo_top .audioDemo_top_rightLabel:hover{
+            background: url("../images/pwd-icons-new.png") -17px -136px no-repeat;
+            cursor: pointer;
+        }
+        #audioDemo #audioDemo_middle{
+            width: 100%;
+            height: 360px;
+            background: url("../images/audiobg.png") 0 0 no-repeat;
+            -webkit-background-size: cover;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+        #audioDemo #audioDemo_middle .audio_pic{
+            width: 180px;
+            height: 150px;
+            background-color: #f00;
+            position: absolute;
+            left: 70px;
+            top: 40px;
+        }
+        #audioDemo #audioDemo_middle .audio_pic > img{
+            width: 180px;
+            height: 150px;
+        }
+        #audioDemo #audioDemo_middle #uploadSong{
+            width: 150px;
+            height: 50px;
+            position: absolute;
+            left: 85px;
+            top: 220px;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-size: 17px;
+            border: 1px solid #fff;
+            opacity: 0.8;
+            filter:alpha(opacity=80);
+        }
+        #audioDemo #audioDemo_middle #uploadSong:hover{
+            opacity: 1;
+            filter:alpha(opacity=100);
+            cursor: pointer;
+        }
+        #audioDemo #audioDemo_middle .audioSongName{
+            width: 215px;
+            height: 30px;
+            position: absolute;
+            left: 365px;
+            top: 40px;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 5px;
+            background: url("../images/playing.gif") 170px 10px no-repeat;
+        }
+        #audioDemo #audioDemo_middle audio{
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+        #bg{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            display: none;
+            background: url("../images/iebg.jpg") -760px 0 no-repeat;
+        }
+        #btn{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -2;
+        }
+        #lookMsgImgMark{
+            width: 320px;
+            margin: 150px auto;
+            position: absolute;
+            left: 515px;
+            top: -13px;
+        }
+        #lookMsg{
+            width: 315px;
+            height: 200px;
+            /*border: 4px solid #F5F5F5;*/
+            border-radius: 5px;
+            border-top: 0;
+            overflow: hidden;
+            position: relative;
+            margin-left: 320px;
+            margin-top:75px;
+            /*background-color: #F5F5F5;*/
+        }
+        #lookMsg #lookMsg_txt{
+            width: 273px;
+            /*background-color: #F5F5F5;*/
+            position: absolute;
+            left: 0;
+            top: 0;
+            float: left;
+            padding: 7px 12px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            color: #0f0;
+            line-height: 30px;
+            text-align: center;
+            text-indent: 18px;
+        }
+        #lookMsg #lookMsg_rightBox{
+            width: 25px;
+            height: 105px;
+            /*background-color: #F5F5F5;*/
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 50px;
+        }
+        #lookMsg #lookMsg_rightBox #moveWheel{
+            width: 88px;
+            height: 9px;
+            border-radius: 10px;
+            transform: rotate(90deg);
+            background-color: #ccc;
+            right: -35px;
+            top: 0px;
+            position: absolute;
+            cursor: pointer;
+        }
+        #lookMsg #lookMsg_rightBox #moveWheel:hover{
+            background-color: #999;
+        }
+    </style>
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../layer/layer.js"></script>
+    <script>
+        function showAudioBox() {
+            var oAudioDemo = document.getElementById('audioDemo');
+            var oAudio = document.getElementById('audio');
+            var oBg = document.getElementById('bg');
+            oAudioDemo.style.display = 'block';
+            oAudio.autoplay = 'autoplay';
+            oBg.style.display = 'block';
+            oAudioDemo.style.margin = '120px auto';
+            var oErr = document.getElementById('err');
+            oErr.onclick = function () {
+                layer.confirm('请您点击取消去停止音乐播放后在关闭哦！',{
+                    title:'提示',
+                    icon:7
+                },function () {
+                    oAudioDemo.style.display = 'none';
+                    oBg.style.display = 'none';
+                    layer.closeAll();
+                });
+            }
+        }
+        window.onload = function (ev) {
+            showAudioBox();
+
+            var oMoveWheel = document.getElementById('moveWheel');
+            var oLookMsg_rightBox = document.getElementById('lookMsg_rightBox');
+            var oLookMsg = document.getElementById('lookMsg');
+            var oLookMsg_txt = document.getElementById('lookMsg_txt');
+            oMoveWheel.onmousedown = function (ev) {
+                var oEvent = ev || event;
+                if(oEvent.preventDefault){
+                    oEvent.preventDefault();
+                }
+                else{
+                    oEvent.returnValue = false;
+                }
+                var disY = oEvent.clientY - oMoveWheel.offsetTop;
+                document.onmousemove = function (ev) {
+                    var oEvent = ev || event;
+                    var wheelTop = oEvent.clientY - disY;
+                    if(wheelTop <= 0){
+                        wheelTop = 0;
+                    }
+                    if(wheelTop >= oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight){
+                        wheelTop = oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight;
+                    }
+                    var scale = wheelTop / (oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight);
+                    var cony = scale * (oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                    oMoveWheel.style.top = wheelTop + 'px';
+                    oLookMsg_txt.style.top = -cony + 'px';
+                }
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                }
+            }
+
+            //滚轮
+            if(window.navigator.userAgent.toLowerCase().indexOf('firefox') != -1){
+                oLookMsg.addEventListener('DOMMouseScroll',function (ev) {
+                    var oEvent = ev || event;
+                    oEvent.preventDefault();
+                    if(oEvent.detail < 0){
+                        var top = oLookMsg_txt.offsetTop + 20;
+                        if(top >= 0){
+                            top = 0;
+                        }
+                        if(top <= -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight)){
+                            top = -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        }
+                        var scale = top / (oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        var cony = scale * (oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight);
+                        oMoveWheel.style.top = -cony + 'px';
+                        oLookMsg_txt.style.top = top + 'px';
+                    }
+                    if(oEvent.detail > 0){
+                        var top = oLookMsg_txt.offsetTop - 20;
+                        if(top >= 0){
+                            top = 0;
+                        }
+                        if(top <= -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight)){
+                            top = -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        }
+                        var scale = top / (oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        var cony = scale * (oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight);
+                        oMoveWheel.style.top = -cony + 'px';
+                        oLookMsg_txt.style.top = top + 'px';
+                    }
+                },false)
+            }
+            else{
+                oLookMsg.onmousewheel = function (ev) {
+                    var oEvent = ev || event;
+                    if(oEvent.preventDefault){
+                        oEvent.preventDefault();
+                    }
+                    else{
+                        oEvent.returnValue = false;
+                    }
+                    if(oEvent.wheelDelta > 0){
+                        var top = oLookMsg_txt.offsetTop + 20;
+                        if(top >= 0){
+                            top = 0;
+                        }
+                        if(top <= -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight)){
+                            top = -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        }
+                        var scale = top / (oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        var cony = scale * (oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight);
+                        oMoveWheel.style.top = -cony + 'px';
+                        oLookMsg_txt.style.top = top + 'px';
+                    }
+                    if(oEvent.wheelDelta < 0){
+                        var top = oLookMsg_txt.offsetTop - 20;
+                        if(top >= 0){
+                            top = 0;
+                        }
+                        if(top <= -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight)){
+                            top = -(oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        }
+                        var scale = top / (oLookMsg_txt.clientHeight - oLookMsg.clientHeight);
+                        var cony = scale * (oLookMsg_rightBox.clientHeight - oMoveWheel.clientHeight);
+                        oMoveWheel.style.top = -cony + 'px';
+                        oLookMsg_txt.style.top = top + 'px';
+                    }
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div id="audioDemo">
+    <div id="audioDemo_top">
+        <div class="audioDemo_top_leftLabel">
+            要死要活&nbsp;
+        </div>
+        <div class="audioDemo_top_rightLabel" id="err"></div>
+    </div>
+    <div id="audioDemo_middle">
+        <div class="audio_pic"><img src="../images/chenHaoChen.jpg" alt=""></div>
+        <div id="uploadSong">下载这首歌</div>
+        <div class="audioSongName">要死要活</div>
+        <!--<div id="lookMsgImgMark"><img src="images/rank_top.png" alt=""></div>-->
+        <div id="lookMsg">
+            <div id="lookMsg_txt">
+				<p style="color:pink;">作词：耕耕</p>
+				
+				<p>作曲：小峰峰</p>
+				
+				<p>编曲：黄志远</p>
+				
+				<p>混音：李琰祥</p>
+				
+				<p>制作人：张雯杰</p>
+				
+				<p>一醉方休最难受问你闹够了没有</p>
+				
+				<p>承诺难收化腐朽你想法我猜不透</p>
+				
+				<p>忍住冲动默默困惑内心野兽是我不够成熟</p>
+				
+				<p>我早已经没法承受向谁求救温柔已失控</p>
+				
+				<p>要死要活都怪我懦弱请恕我难懂你的追求</p>
+				
+				<p>敢说敢做却忽略我感受只想让自己快活</p>
+				
+				<p>彻夜不休想太多我是该哭还是留</p>
+				
+				<p>学着看透变洒脱从此我别无所求</p>
+				
+				<p>摊开双手放任你走不是我怂而你欲取欲求</p>
+				
+				<p>我早已经厌烦忍受你还不够全都要掌控</p>
+				
+				<p>要死要活都怪我懦弱请恕我难懂你的追求</p>
+				
+				<p>敢说敢做却忽略我感受只想让自己快活</p>
+				
+				<p>要死要活都怪我懦弱请恕我难懂你的追求</p>
+				
+				<p>敢说敢做却忽略我感受只想让自己快活</p>
+				
+				<p>要死要活都怪我懦弱请恕我难懂你的追求</p>
+				
+				<p>敢说敢做却忽略我感受只想让自己快活</p>
+            </div>
+            <div id="lookMsg_rightBox">
+                <div id="moveWheel"></div>
+            </div>
+        </div>
+        <audio controls="controls" loop="loop" id="audio">
+            <source src="../music/shiTing-yao.mp3" type="audio/mp3">
+        </audio>
+    </div>
+</div>
+<div id="bg"></div>
+</body>
+</html>
